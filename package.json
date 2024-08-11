@@ -1,0 +1,16 @@
+{
+  "name": "github-user-activity",
+  "version": "1.0.0",
+  "description": "CLI tool to fetch and display GitHub user activity",
+  "main": "github-activity.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "GitHub",
+    "CLI",
+    "Node.js."
+  ],
+  "author": "Chrystalio (Kristoff)",
+  "license": "MIT"
+}
