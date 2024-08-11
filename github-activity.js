@@ -1,7 +1,7 @@
 const https = require('https');
 const readline = require('readline');
 
-function getUserActivity(username) {
+const getUserActivity = (username) => {
     const options = {
         hostname: 'api.github.com',
         path: `/users/${username}/events`,
@@ -83,7 +83,7 @@ function getUserActivity(username) {
     req.end();
 }
 
-function main() {
+const main = () => {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
