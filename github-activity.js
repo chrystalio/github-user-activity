@@ -1,7 +1,17 @@
 const https = require('https');
 const readline = require('readline');
 
-const getUserActivity = (username) => {
+const eventTypes = [
+    'PushEvent',
+    'PullRequestEvent',
+    'CreateEvent',
+    'WatchEvent',
+    'DeleteEvent',
+    'IssueCommentEvent',
+    'All'
+];
+
+const getUserActivity = (username, selectedEventType) => {
     const options = {
         hostname: 'api.github.com',
         path: `/users/${username}/events`,
@@ -22,7 +32,9 @@ const getUserActivity = (username) => {
             if (res.statusCode === 200) {
                 const events = JSON.parse(data);
 
-                const summary = events.reduce((acc, event) => {
+                const filteredEvents = selectedEventType === 'All' ? events : events.filter(event => event.type === selectedEventType);
+
+                const summary = filteredEvents.reduce((acc, event) => {
                     const repoName = event.repo.name;
                     const eventType = event.type;
 
@@ -38,13 +50,13 @@ const getUserActivity = (username) => {
                     return acc;
                 }, {});
 
-                const output = Object.entries(summary).flatMap(([repoName, events]) =>
-                    Object.entries(events).map(([eventType, count]) => {
+                const output = Object.entries(summary).map(([repoName, events]) => {
+                    const eventDescriptions = Object.entries(events).map(([eventType, count]) => {
                         let action = '';
 
                         switch (eventType) {
                             case 'PushEvent':
-                                action = `Pushed ${count} commit${count > 1 ? 's' : ''}`;
+                                action = `Pushed ${count} time${count > 1 ? 's' : ''}`;
                                 break;
                             case 'CreateEvent':
                                 action = `Created ${count} event${count > 1 ? 's' : ''}`;
@@ -65,11 +77,13 @@ const getUserActivity = (username) => {
                                 action = `${eventType} (${count})`;
                         }
 
-                        return `- ${action} in ${repoName}`;
-                    })
-                );
+                        return `  - ${action}`;
+                    }).join('\n');
 
-                output.forEach(line => console.log(line));
+                    return `Repository: ${repoName}\n${eventDescriptions}`;
+                });
+
+                console.log('\n' + output.join('\n\n'));
             } else {
                 console.log(`Error: ${res.statusCode} - ${res.statusMessage}`);
             }
@@ -91,8 +105,18 @@ const main = () => {
 
     rl.question('Enter GitHub Username: ', (username) => {
         console.log(`Fetching activity for ${username}...`);
-        getUserActivity(username);
-        rl.close();
+        console.log(''); // Adding space before the menu
+
+        console.log('Select the event type to filter by:');
+        eventTypes.forEach((eventType, index) => {
+            console.log(`${index + 1}. ${eventType}`);
+        });
+
+        rl.question('Enter the number corresponding to the event type: ', (choice) => {
+            const selectedEventType = eventTypes[parseInt(choice) - 1] || 'All';
+            getUserActivity(username, selectedEventType);
+            rl.close();
+        });
     });
 }
 
