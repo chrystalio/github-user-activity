@@ -1,5 +1,7 @@
-const https = require('https');
-const readline = require('readline');
+import https from 'https';
+import readline from 'readline';
+import chalk from 'chalk';
+import figlet from 'figlet';
 
 const eventTypes = [
     'PushEvent',
@@ -50,13 +52,15 @@ const getUserActivity = (username, selectedEventType) => {
                     return acc;
                 }, {});
 
-                const output = Object.entries(summary).map(([repoName, events]) => {
-                    const eventDescriptions = Object.entries(events).map(([eventType, count]) => {
+                console.log(chalk.yellow('\nActivity Summary:'));
+
+                const output = Object.entries(summary).flatMap(([repoName, events]) =>
+                    Object.entries(events).map(([eventType, count]) => {
                         let action = '';
 
                         switch (eventType) {
                             case 'PushEvent':
-                                action = `Pushed ${count} time${count > 1 ? 's' : ''}`;
+                                action = `Pushed ${count} commit${count > 1 ? 's' : ''}`;
                                 break;
                             case 'CreateEvent':
                                 action = `Created ${count} event${count > 1 ? 's' : ''}`;
@@ -77,21 +81,19 @@ const getUserActivity = (username, selectedEventType) => {
                                 action = `${eventType} (${count})`;
                         }
 
-                        return `  - ${action}`;
-                    }).join('\n');
+                        return chalk.green(`- ${action} in ${repoName}`);
+                    })
+                );
 
-                    return `Repository: ${repoName}\n${eventDescriptions}`;
-                });
-
-                console.log('\n' + output.join('\n\n'));
+                output.forEach(line => console.log(line));
             } else {
-                console.log(`Error: ${res.statusCode} - ${res.statusMessage}`);
+                console.log(chalk.red(`Error: ${res.statusCode} - ${res.statusMessage}`));
             }
         });
     });
 
     req.on('error', (e) => {
-        console.error(`Problem with request: ${e.message}`);
+        console.error(chalk.red(`Problem with request: ${e.message}`));
     });
 
     req.end();
@@ -103,19 +105,27 @@ const main = () => {
         output: process.stdout
     });
 
-    rl.question('Enter GitHub Username: ', (username) => {
-        console.log(`Fetching activity for ${username}...`);
-        console.log(''); // Adding space before the menu
+    figlet('GitHub User Activity', (err, data) => {
+        if (err) {
+            console.log(chalk.red('Something went wrong...'));
+            console.dir(err);
+            return;
+        }
+        console.log(chalk.blue(data));
 
-        console.log('Select the event type to filter by:');
-        eventTypes.forEach((eventType, index) => {
-            console.log(`${index + 1}. ${eventType}`);
-        });
+        rl.question('Enter GitHub Username: ', (username) => {
+            console.log(chalk.green(`Fetching activity for ${username}...`));
 
-        rl.question('Enter the number corresponding to the event type: ', (choice) => {
-            const selectedEventType = eventTypes[parseInt(choice) - 1] || 'All';
-            getUserActivity(username, selectedEventType);
-            rl.close();
+            console.log(chalk.cyan('Select the event type to filter by:'));
+            eventTypes.forEach((eventType, index) => {
+                console.log(chalk.magenta(`${index + 1}. ${eventType}`));
+            });
+
+            rl.question('\nEnter the number corresponding to the event type: ', (choice) => {
+                const selectedEventType = eventTypes[parseInt(choice) - 1] || 'All';
+                getUserActivity(username, selectedEventType);
+                rl.close();
+            });
         });
     });
 }
