@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CLI tool to fetch and display GitHub user activity",
   "main": "github-activity.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node github-activity.js"
@@ -13,5 +14,9 @@
     "Node.js."
   ],
   "author": "Chrystalio (Kristoff)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "figlet": "^1.7.0"
+  }
 }
