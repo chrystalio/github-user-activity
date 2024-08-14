@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2024-08-14
+
+### Added
+- Styled ASCII Art: Integrated figlet to display a stylized ASCII art header with GitHub User Activity
+- Colorized Output: Utilized chalk to enhance the CLI output with color, improving readability and visual appeal.
+
+### Changes
+- Updated the CLI tool to include a more visually engaging display, featuring a colored header and dynamic ASCII art.
+
 ## [1.0.1] - 2024-08-12
 
 ### Added
