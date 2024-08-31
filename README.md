@@ -46,6 +46,21 @@ Select the event type to filter by:
 6. IssueCommentEvent
 7. All
 Enter the number corresponding to the event type: 1
+
+Activity Summary:
+- Pushed 9 commits in chrystalio/github-user-activity
+- Deleted 2 events in chrystalio/github-user-activity
+- Opened 4 pull requests in chrystalio/github-user-activity
+- Commented on 2 issues in chrystalio/github-user-activity
+- Created 4 events in chrystalio/github-user-activity
+- Starred in chrystalio/github-user-activity
+- Pushed 1 commit in chrystalio/KapanLibur
+- Starred in sqlmapproject/sqlmap
+- Starred in hacksider/Deep-Live-Cam
+- Pushed 1 commit in chrystalio/chrystalio
+- Starred in Anamcoollzz/laravel-11-template
+- Starred in kevintherm/image-roaster
+- Pushed 2 commits in chrystalio/BudgetBuddy
 ```
 
 The tool will then display the activity for the specified user, filtered by the selected event type, with the output styled with color and ASCII art.
