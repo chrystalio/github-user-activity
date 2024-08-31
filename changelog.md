@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2024-08-15
+
+### Added
+- User Existence Check: Implemented a validation step to check if a GitHub user exists before fetching their activity. This prevents unnecessary API calls and enhances error handling.
+
+### Improved
+- Error Handling: Enhanced error messages to provide clearer feedback when a user is not found or if there are issues fetching data from GitHub.
+
 ## [1.0.2] - 2024-08-14
 
 ### Added
