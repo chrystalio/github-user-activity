@@ -1,3 +1,4 @@
+// 
 import https from 'https';
 import readline from 'readline';
 import chalk from 'chalk';
@@ -12,6 +13,43 @@ const eventTypes = [
     'IssueCommentEvent',
     'All'
 ];
+
+const checkUserExists = (username, callback) => {
+    const options = {
+        hostname: 'api.github.com',
+        path: `/users/${username}`,
+        method: 'GET',
+        headers: {
+            'User-Agent': 'node.js'
+        }
+    };
+
+    const req = https.request(options, (res) => {
+        let result = '';
+        res.on('data', (chunk) => {
+            result += chunk;
+        });
+
+        res.on('end', () => {
+            if (res.statusCode === 404) {
+                console.log(chalk.red(`Error: User ${username} not found.`));
+                callback(false);
+            } else if (res.statusCode === 200) {
+                callback(true);
+            } else {
+                console.log(chalk.red(`Error: Failed to fetch user data. Status Code: ${res.statusCode}`));
+                callback(false);
+            }
+        });
+    });
+
+    req.on('error', (e) => {
+        console.error(chalk.red(`Problem with request: ${e.message}`));
+        callback(false);
+    });
+
+    req.end();
+};
 
 const getUserActivity = (username, selectedEventType) => {
     const options = {
@@ -114,17 +152,25 @@ const main = () => {
         console.log(chalk.blue(data));
 
         rl.question('Enter GitHub Username: ', (username) => {
-            console.log(chalk.green(`Fetching activity for ${username}...`));
+            // Check if the user exists before proceeding
+            checkUserExists(username, (exists) => {
+                if (!exists) {
+                    rl.close();
+                    return;
+                }
 
-            console.log(chalk.cyan('Select the event type to filter by:'));
-            eventTypes.forEach((eventType, index) => {
-                console.log(chalk.magenta(`${index + 1}. ${eventType}`));
-            });
+                console.log(chalk.green(`Fetching activity for ${username}...`));
 
-            rl.question('\nEnter the number corresponding to the event type: ', (choice) => {
-                const selectedEventType = eventTypes[parseInt(choice) - 1] || 'All';
-                getUserActivity(username, selectedEventType);
-                rl.close();
+                console.log(chalk.cyan('Select the event type to filter by:'));
+                eventTypes.forEach((eventType, index) => {
+                    console.log(chalk.magenta(`${index + 1}. ${eventType}`));
+                });
+
+                rl.question('\nEnter the number corresponding to the event type: ', (choice) => {
+                    const selectedEventType = eventTypes[parseInt(choice) - 1] || 'All';
+                    getUserActivity(username, selectedEventType);
+                    rl.close();
+                });
             });
         });
     });
