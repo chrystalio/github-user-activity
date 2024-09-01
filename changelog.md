@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.3] - 2024-08-15
+## [1.0.4] - 2024-09-01
+
+### Added
+- Implemented a caching system with a 5-minute TTL to reduce API calls and improve performance.
+- Added automatic cache cleanup for files older than 1 day to manage storage effectively.
+
+## [1.0.3] - 2024-08-31
 
 ### Added
 - User Existence Check: Implemented a validation step to check if a GitHub user exists before fetching their activity. This prevents unnecessary API calls and enhances error handling.
