@@ -2,7 +2,8 @@
 
 The GitHub User Activity CLI is an intuitive command-line tool crafted to fetch and elegantly display a GitHub user's recent activity. This tool transforms the conventional output into a visually engaging experience with colorized text and stylized ASCII art headers, making it not only more user-friendly but also visually appealing.
 
-Inspired by a project idea from [roadmap.sh Backend Projects](https://roadmap.sh/backend/projects), this tool aligns with the platform’s mission to empower developers. Roadmap.sh is a community-driven resource that offers meticulously curated learning paths and innovative project ideas across various technology domains. It provides detailed "roadmaps," comprehensive guides that delineate the essential steps, skills, tools, and technologies necessary to master different tech roles effectively.
+This project is inspired by [GitHub User Activity](https://roadmap.sh/projects/github-user-activity), an idea from roadmap.sh Backend Projects lists. Roadmap.sh is a community-driven platform that offers curated learning paths and project ideas to help developers master various technology roles. This CLI tool brings the concept to life by fetching and displaying a GitHub user's recent activity in a visually engaging and user-friendly manner.
+
 
 Whether you're a developer seeking to monitor your own project updates or a team lead needing to oversee your team's GitHub activities, this CLI tool offers a streamlined and enriched viewing experience, promoting greater productivity and insight into development workflows.
 
